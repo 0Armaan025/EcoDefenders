@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const net = SpriteKind.create()
     export const trash = SpriteKind.create()
+    export const snake = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.showLongText("You won!", DialogLayout.Top)
@@ -86,6 +87,15 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     a_button = 1
+})
+sprites.onOverlap(SpriteKind.snake, SpriteKind.Player, function (sprite, otherSprite) {
+    if (check_var == 0) {
+        check_var = 1
+        sprite.sayText("Please Save me! take me to shelter please!", 2000, false)
+        snake_here.follow(mySprite)
+    } else {
+    	
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.trash, function (sprite, otherSprite) {
     music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
@@ -199,6 +209,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     }
 })
 let projectile: Sprite = null
+let snake_here: Sprite = null
+let check_var = 0
 let mySprite2: Sprite = null
 let net2: Sprite = null
 let my_enemy: Sprite = null
@@ -440,3 +452,6 @@ for (let index = 0; index < randint(3, 10); index++) {
     mySprite2 = list._pickRandom()
     mySprite2.setPosition(randint(15, 500), randint(15, 105))
 }
+check_var = 0
+snake_here = sprites.create(assets.tile`myTile3`, SpriteKind.snake)
+snake_here.setPosition(700, 27)
