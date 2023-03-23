@@ -2,6 +2,7 @@ namespace SpriteKind {
     export const net = SpriteKind.create()
     export const trash = SpriteKind.create()
     export const snake = SpriteKind.create()
+    export const monkey = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     game.showLongText("You won!", DialogLayout.Top)
@@ -13,10 +14,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
         if (a_button == 1) {
             game.splash("Good, you got 10 points, let's contribute to Swach Bharat Abhyan")
             info.changeScoreBy(10)
-        }
-        if (b_button == 1) {
-            game.splash("No, you would have put it in blue bin only!!")
-            info.changeScoreBy(-10)
+        } else {
+            if (b_button == 1) {
+                game.splash("No, you would have put it in blue bin only!!")
+                info.changeScoreBy(-10)
+            }
         }
     }
 })
@@ -88,11 +90,29 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     a_button = 1
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.snake, function (sprite, otherSprite) {
+    game.splash("Please don't hurt animals, save them! Let's develop India!")
+    info.changeScoreBy(-15)
+})
 sprites.onOverlap(SpriteKind.snake, SpriteKind.Player, function (sprite, otherSprite) {
     if (check_var == 0) {
         check_var = 1
         sprite.sayText("Please Save me! take me to shelter please!", 2000, false)
         snake_here.follow(mySprite)
+    } else {
+    	
+    }
+})
+scene.onOverlapTile(SpriteKind.monkey, assets.tile`myTile6`, function (sprite, location) {
+    game.splash("Thanks for providing me a home :)", "-Your friend Monkey")
+    info.changeScoreBy(10)
+    sprites.destroy(sprite)
+})
+sprites.onOverlap(SpriteKind.monkey, SpriteKind.Player, function (sprite, otherSprite) {
+    if (check_var_1 == 0) {
+        check_var_1 = 1
+        sprite.sayText("Please Save me! take me to shelter please!", 2000, false)
+        monkey.follow(mySprite)
     } else {
     	
     }
@@ -199,6 +219,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     info.changeScoreBy(10)
     music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
 })
+scene.onOverlapTile(SpriteKind.snake, assets.tile`myTile6`, function (sprite, location) {
+    game.splash("Thanks for providing me a home :)", "-Your friend Snake")
+    info.changeScoreBy(10)
+    sprites.destroy(sprite)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     game.showLongText("Hey! 5 points = super sonic power, click b to use on enemy!!", DialogLayout.Top)
     scene.cameraShake(4, 500)
@@ -209,8 +234,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     }
 })
 let projectile: Sprite = null
-let snake_here: Sprite = null
+let check_var_1 = 0
 let check_var = 0
+let monkey: Sprite = null
+let snake_here: Sprite = null
 let mySprite2: Sprite = null
 let net2: Sprite = null
 let my_enemy: Sprite = null
@@ -406,7 +433,7 @@ net2 = sprites.create(img`
     . . . . f 1 1 1 f f f f f f f f f f . . 
     . . . . . f f 1 . . f . . f . f . . . . 
     `, SpriteKind.net)
-net2.follow(mySprite)
+net2.follow(mySprite, 120)
 my_enemy.setPosition(random_no + randint(0, 10), random_no + randint(0, 10))
 my_enemy.follow(mySprite, 30)
 music.play(music.stringPlayable("E D G F B A C5 B ", 50), music.PlaybackMode.LoopingInBackground)
@@ -452,6 +479,26 @@ for (let index = 0; index < randint(3, 10); index++) {
     mySprite2 = list._pickRandom()
     mySprite2.setPosition(randint(15, 500), randint(15, 105))
 }
-check_var = 0
 snake_here = sprites.create(assets.tile`myTile3`, SpriteKind.snake)
+monkey = sprites.create(img`
+    . . . . f f f f f . . . . . . . 
+    . . . f e e e e e f . . . . . . 
+    . . f d d d d e e e f . . . . . 
+    . c d f d d f d e e f f . . . . 
+    . c d f d d f d e e d d f . . . 
+    c d e e d d d d e e b d c . . . 
+    c d d d d c d d e e b d c . f f 
+    c c c c c d d d e e f c . f e f 
+    . f d d d d d e e f f . . f e f 
+    . . f f f f f e e e e f . f e f 
+    . . . . f e e e e e e e f f e f 
+    . . . f e f f e f e e e e f f . 
+    . . . f e f f e f e e e e f . . 
+    . . . f d b f d b f f e f . . . 
+    . . . f d d c d d b b d f . . . 
+    . . . . f f f f f f f f f . . . 
+    `, SpriteKind.monkey)
 snake_here.setPosition(700, 27)
+monkey.setPosition(820, 70)
+check_var = 0
+check_var_1 = 0
