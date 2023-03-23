@@ -90,6 +90,11 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     a_button = 1
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile9`, function (sprite, location) {
+    mySprite.startEffect(effects.fountain, 5000)
+    mySprite.startEffect(effects.warmRadial, 5000)
+    mySprite.startEffect(effects.rings, 5000)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.snake, function (sprite, otherSprite) {
     game.splash("Please don't hurt animals, save them! Let's develop India!")
     info.changeScoreBy(-15)
@@ -435,7 +440,7 @@ net2 = sprites.create(img`
     `, SpriteKind.net)
 net2.follow(mySprite, 120)
 my_enemy.setPosition(random_no + randint(0, 10), random_no + randint(0, 10))
-my_enemy.follow(mySprite, 30)
+my_enemy.follow(mySprite, 31)
 music.play(music.stringPlayable("E D G F B A C5 B ", 50), music.PlaybackMode.LoopingInBackground)
 image.create(30, 30).setPixel(1, 1, 5)
 for (let index = 0; index < randint(3, 10); index++) {
