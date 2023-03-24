@@ -8,18 +8,23 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, l
     game.showLongText("You won!", DialogLayout.Top)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, location) {
-    if (a_button == 1) {
-        game.splash("Will you put coke cans in the blue bin?")
-        game.splash(game.ask("A or B?"))
+    if (check_new_1 == 0) {
         if (a_button == 1) {
-            game.splash("Good, you got 10 points, let's contribute to Swach Bharat Abhyan")
-            info.changeScoreBy(10)
-        } else {
-            if (b_button == 1) {
-                game.splash("No, you would have put it in blue bin only!!")
-                info.changeScoreBy(-10)
+            game.splash("Will you put coke cans in the blue bin?")
+            game.splash(game.ask("A or B?"))
+            if (a_button == 1) {
+                game.splash("Good, you got 10 points, let's contribute to Swach Bharat Abhyan")
+                info.changeScoreBy(10)
+                check_new_1 = 1
+            } else {
+                if (b_button == 1) {
+                    game.splash("No, you would have put it in blue bin only!!")
+                    info.changeScoreBy(-10)
+                }
             }
         }
+    } else {
+    	
     }
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -246,6 +251,7 @@ let snake_here: Sprite = null
 let mySprite2: Sprite = null
 let net2: Sprite = null
 let my_enemy: Sprite = null
+let check_new_1 = 0
 let mySprite: Sprite = null
 let b_button = 0
 let a_button = 0
@@ -394,6 +400,7 @@ mySprite = sprites.create(img`
     . . . . . f f f f f f . . . . . 
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
+check_new_1 = 0
 controller.moveSprite(mySprite, 100, 100)
 mySprite.ay = 200
 scene.cameraFollowSprite(mySprite)
@@ -506,4 +513,5 @@ monkey = sprites.create(img`
 snake_here.setPosition(700, 27)
 monkey.setPosition(820, 70)
 check_var = 0
+check_new_1 = 0
 check_var_1 = 0
